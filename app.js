@@ -12,9 +12,14 @@ app.use(cors({ origin: 'https://hypeplify.com' }));
 // Log startup
 console.log('App starting...');
 
-// Load the service account credentials from the JSON file
+// Load the service account credentials from the environment variable
 console.log('Loading service account credentials...');
-const credentials = require('./kashing-441711-41f4dc33bcf3.json'); // Replace with the name of your JSON file
+const { GOOGLE_CREDENTIALS } = process.env;
+if (!GOOGLE_CREDENTIALS) {
+    throw new Error('GOOGLE_CREDENTIALS environment variable not set');
+}
+
+const credentials = JSON.parse(GOOGLE_CREDENTIALS); // Parse the environment variable
 
 // Initialize the Google Sheets API client
 console.log('Initializing Google Sheets API client...');
