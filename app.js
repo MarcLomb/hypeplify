@@ -15,11 +15,23 @@ console.log('App starting...');
 // Load the service account credentials from the environment variable
 console.log('Loading service account credentials...');
 const { GOOGLE_CREDENTIALS } = process.env;
+
+// Debugging: log the GOOGLE_CREDENTIALS environment variable to confirm it's set
+console.log('GOOGLE_CREDENTIALS:', GOOGLE_CREDENTIALS);
+
+// Check if GOOGLE_CREDENTIALS is available
 if (!GOOGLE_CREDENTIALS) {
     throw new Error('GOOGLE_CREDENTIALS environment variable not set');
 }
 
-const credentials = JSON.parse(GOOGLE_CREDENTIALS); // Parse the environment variable
+// Parse the JSON credentials from the environment variable
+let credentials;
+try {
+    credentials = JSON.parse(GOOGLE_CREDENTIALS);
+} catch (error) {
+    console.error('Error parsing GOOGLE_CREDENTIALS:', error);
+    throw new Error('Failed to parse GOOGLE_CREDENTIALS');
+}
 
 // Initialize the Google Sheets API client
 console.log('Initializing Google Sheets API client...');
